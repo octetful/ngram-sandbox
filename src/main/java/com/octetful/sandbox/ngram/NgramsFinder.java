@@ -15,14 +15,14 @@ public class NgramsFinder {
 
   public static List<String> ngrams(String corpus, int n) {
     List<String> ngrams = new ArrayList<>();
-    List<String> tokens = normalise(tokenise(corpus));
+    List<String> tokens = applySpecialSymbolPadding(tokenise(corpus));
     for (int i = 0; i < tokens.size() - n + 1; i++) {
       ngrams.add(String.join(" ", tokens.subList(i, i + n)));
     }
     return ngrams;
   }
 
-  private static List<String> normalise(List<String> tokens) {
+  private static List<String> applySpecialSymbolPadding(List<String> tokens) {
     if ( tokens.isEmpty() )
       return tokens;
     var normalisedList = new ArrayList<String>();
