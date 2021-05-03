@@ -15,14 +15,20 @@ class NgramsTest {
   @Test
   @DisplayName("Should return the same token for a single token corpus for unigrams")
   void shouldReturnTokenForSingleTokenCorpusForUnigrams() {
-    assertEquals("Humpty", ngrams("Humpty", 1).get(0));
+    String corpus = "Humpty";
+    assertEquals(NgramsFinder.START_TOKEN, ngrams(corpus, 1).get(0));
+    assertEquals("Humpty", ngrams(corpus, 1).get(1));
+    assertEquals(NgramsFinder.END_TOKEN, ngrams(corpus, 1).get(2));
   }
 
   @Test
   @DisplayName("Should return the two tokens for unigrams for a corpus with two tokens")
   void shouldReturnSingleTokenForUnigramsForTwoTokenCorpus() {
-    assertEquals("Humpty", ngrams("Humpty Dumpty", 1).get(0));
-    assertEquals("Dumpty", ngrams("Humpty Dumpty", 1).get(1));
+    String corpus = "Humpty Dumpty";
+    assertEquals(NgramsFinder.START_TOKEN, ngrams(corpus, 1).get(0));
+    assertEquals("Humpty", ngrams(corpus, 1).get(1));
+    assertEquals("Dumpty", ngrams(corpus, 1).get(2));
+    assertEquals(NgramsFinder.END_TOKEN, ngrams(corpus, 1).get(3));
   }
 
   @Test
@@ -30,8 +36,10 @@ class NgramsTest {
   void shouldReturnAllBigramsForCorpus() {
     final String corpus = "Humpty Dumpty sat";
     int n = 2;
-    assertEquals("Humpty Dumpty", ngrams(corpus, n).get(0));
-    assertEquals("Dumpty sat", ngrams(corpus, n).get(1));
+    assertEquals(NgramsFinder.START_TOKEN + " Humpty", ngrams(corpus, n).get(0));
+    assertEquals("Humpty Dumpty", ngrams(corpus, n).get(1));
+    assertEquals("Dumpty sat", ngrams(corpus, n).get(2));
+    assertEquals("sat " + NgramsFinder.END_TOKEN, ngrams(corpus, n).get(3));
   }
 
   @Test
@@ -39,7 +47,7 @@ class NgramsTest {
   void shouldReturnExactNumberOfExpectedBigramsForCorpus() {
     final String corpus = "Humpty Dumpty sat";
     int n = 2;
-    assertEquals(2, ngrams(corpus, n).size());
+    assertEquals(4, ngrams(corpus, n).size());
   }
 
   @Test
@@ -47,10 +55,12 @@ class NgramsTest {
   void shouldReturnAllTrigramsForCorpus() {
     final String corpus = "Humpty Dumpty sat on a wall";
     int n = 3;
-    assertEquals("Humpty Dumpty sat", ngrams(corpus, n).get(0));
-    assertEquals("Dumpty sat on", ngrams(corpus, n).get(1));
-    assertEquals("sat on a", ngrams(corpus, n).get(2));
-    assertEquals("on a wall", ngrams(corpus, n).get(3));
+    assertEquals(NgramsFinder.START_TOKEN + " Humpty Dumpty", ngrams(corpus, n).get(0));
+    assertEquals("Humpty Dumpty sat", ngrams(corpus, n).get(1));
+    assertEquals("Dumpty sat on", ngrams(corpus, n).get(2));
+    assertEquals("sat on a", ngrams(corpus, n).get(3));
+    assertEquals("on a wall", ngrams(corpus, n).get(4));
+    assertEquals("a wall " + NgramsFinder.END_TOKEN, ngrams(corpus, n).get(5));
   }
 
   @Test
@@ -58,6 +68,6 @@ class NgramsTest {
   void shouldReturnExactNumberOfExpectedTrigramsForCorpus() {
     final String corpus = "Humpty Dumpty sat on a wall";
     int n = 3;
-    assertEquals(4, ngrams(corpus, n).size());
+    assertEquals(6, ngrams(corpus, n).size());
   }
 }
