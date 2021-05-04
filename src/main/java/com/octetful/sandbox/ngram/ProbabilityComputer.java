@@ -12,7 +12,7 @@ public class ProbabilityComputer {
   }
 
   public double count(String sequence) {
-    List<String> ngrams = NgramsFinder.ngrams(corpus, wordCount(sequence));
+    List<String> ngrams = NgramsFinder.ngramsWithPadding(corpus, wordCount(sequence));
     return ngrams
         .stream()
         .filter(sequence::equalsIgnoreCase)
@@ -24,7 +24,7 @@ public class ProbabilityComputer {
       return count(sequence)/ totalWordsCount;
     }
 
-    String remainingSequence = sequence.substring(0, sequence.lastIndexOf(" "));
+    var remainingSequence = sequence.substring(0, sequence.lastIndexOf(" "));
     return (count(sequence)/count(remainingSequence))*probability(remainingSequence);
   }
 

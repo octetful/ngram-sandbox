@@ -3,6 +3,7 @@ package com.octetful.sandbox.ngram;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Function;
 
 public class NgramsFinder {
 
@@ -13,10 +14,18 @@ public class NgramsFinder {
 
   }
 
+  public static List<String> ngramsWithPadding(String corpus, int n) {
+    return ngrams(corpus, n, x -> applySpecialSymbolPadding(tokenise(x)));
+  }
+
   public static List<String> ngrams(String corpus, int n) {
+    return ngrams(corpus, n, NgramsFinder::tokenise);
+  }
+
+  protected static List<String> ngrams(String corpus, int n, Function<String, List<String>> tokeniser) {
     List<String> ngrams = new ArrayList<>();
-    List<String> tokens = applySpecialSymbolPadding(tokenise(corpus));
-    for (int i = 0; i < tokens.size() - n + 1; i++) {
+    List<String> tokens = tokeniser.apply(corpus);
+    for (var i = 0; i < tokens.size() - n + 1; i++) {
       ngrams.add(String.join(" ", tokens.subList(i, i + n)));
     }
     return ngrams;
