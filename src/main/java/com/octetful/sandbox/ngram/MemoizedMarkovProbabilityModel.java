@@ -21,7 +21,7 @@ public class MemoizedMarkovProbabilityModel {
         .forEach(this::updateHistogram);
   }
 
-  public double probability(String key) {
+  protected double probability(String key) {
     var given = key.substring(0,
         key.lastIndexOf(" "));
     return count(key) / count(given);
