@@ -35,4 +35,16 @@ class MemoizedMarkovProbabilityModelTest {
     assertEquals((2d/3d), model.probability("I am"));
   }
 
+  @Test
+  @DisplayName("given a sequence longer than the n-grams model, should be able to calculate using chain rule")
+  void shouldApplyChainRuleForLongerSequences() {
+    final int n = 2;
+    final MemoizedMarkovProbabilityModel model =
+        new MemoizedMarkovProbabilityModel(n);
+    model.train("I am Sam");
+    model.train("Sam I am");
+    model.train("I do not like green eggs and ham");
+    assertEquals((1d/3d), model.computeProbability("I do not"));
+  }
+
 }
