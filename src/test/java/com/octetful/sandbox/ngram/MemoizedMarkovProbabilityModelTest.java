@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class MemoizedMarkovProbabilityModelTest {
   @Test
@@ -45,6 +46,21 @@ class MemoizedMarkovProbabilityModelTest {
     model.train("Sam I am");
     model.train("I do not like green eggs and ham");
     assertEquals((1d/3d), model.computeProbability("I do not"));
+  }
+
+  @Test
+  @DisplayName("given a corpus and a sequence, should be able to predict next word")
+  void shouldPredictNextWord() {
+    final int n = 2;
+    final MemoizedMarkovProbabilityModel model =
+        new MemoizedMarkovProbabilityModel(n);
+    model.train("I wake up");
+    model.train("I do breakfast");
+    model.train("You do Yoga");
+    model.train("How can I do Yoga");
+    model.train("Teach me how to do Yoga");
+    assertTrue(model.predictNextWord("can I do").isPresent());
+    assertEquals("Yoga", model.predictNextWord("can I do").get());
   }
 
 }

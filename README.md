@@ -71,13 +71,19 @@ Given the above corpus, for example, the 3-grams would be as follows:
 # User Guide
 If you wish to play with the classes provided as a library, consider the following code snippet:
 
-```
-var n = 2; // for 2-grams
-var model = new MemoizedMarkovProbabilityModel(n); // create model
-var corpus = "Humpty Dumpty sat on a wall"; // training corpus
-model.train(corpus); // train the model.
-double probability = model.computeProbability("Humpty Dumpty");
-// more to come soon...
+```java
+class SomeClass {
+  public static void main(String[] args) {
+    var n = 2; // for 2-grams
+    var model = new MemoizedMarkovProbabilityModel(n); // create model
+    var corpus = "Humpty Dumpty sat on a wall"; // training corpus
+    model.train(corpus); // train the model.
+    var probability = model.computeProbability("Humpty Dumpty");
+    System.out.println(probability);
+    var nextWord = model.predictNextWord("Humpty Dumpty");
+    System.out.println(nextWord);
+  }
+}
 ```
 
 # Bibliography

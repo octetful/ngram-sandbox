@@ -1,7 +1,6 @@
 package com.octetful.sandbox.ngram;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class MemoizedMarkovProbabilityModel {
   private final int n;
@@ -53,5 +52,18 @@ public class MemoizedMarkovProbabilityModel {
 
   private int wordCount(String sequence) {
     return sequence.trim().split("\\s+").length;
+  }
+
+  public Optional<String> predictNextWord(String sequence) {
+    var words = Arrays.asList(sequence.trim().split("\\s+"));
+
+    var searchTerm = String.join(" ",
+        words.subList(words.size() - n + 1, words.size() - 1));
+
+    return histogram.entrySet().stream()
+        .filter(e -> e.getKey().startsWith(searchTerm))
+        .max(Comparator.comparingInt(Map.Entry::getValue))
+        .map(Map.Entry::getKey)
+        .map(x -> x.substring(x.lastIndexOf(" ") + 1));
   }
 }
